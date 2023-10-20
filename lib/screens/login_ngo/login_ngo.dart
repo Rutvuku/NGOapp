@@ -63,12 +63,13 @@ class _LoginNGOState extends State<LoginNGO> {
       var msg = jsonResponse['msg'];
 
       var mailid= jsonResponse['user']['email'];
+      var id = jsonResponse['user']['_id'];
       prefs.setString('token', myToken);
       print(myToken);
       print(msg);
       print(mailid);
-
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>CreatePosts(myToken: myToken)));
+      print(id);
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>CreatePosts(myToken: myToken,userid: id.toString(),)));
       // if(jsonResponse==200){
       //   var myToken = jsonResponse['token'];
       //   prefs.setString('token', myToken);

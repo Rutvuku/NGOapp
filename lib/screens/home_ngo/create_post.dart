@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 
 class CreatePosts extends StatefulWidget {
   final String myToken;
-  const CreatePosts({Key? key,required this.myToken}) : super(key: key);
+  final String userid;
+  const CreatePosts({Key? key,required this.myToken,required this.userid}) : super(key: key);
 
   @override
   State<CreatePosts> createState() => _CreatePostsState();
@@ -34,16 +35,17 @@ class _CreatePostsState extends State<CreatePosts> {
       "time": timeController.text,
       "location": locationController.text,
       "tagline": taglineController.text,
-      "vacancy": vacancyController.text
+      "vacancy": vacancyController.text,
+      "creator":widget.userid,
     };
     var response = await http.post(Uri.parse("https://ecogather.onrender.com/api/event/"),
-        headers: {"Content-Type":"application/json","Authorization": 'Bearer '+widget.myToken,},
+        headers: {"Content-Type":"application/json",},
         body: jsonEncode(reqBody)
     );
     var jsonResponse = jsonDecode(response.body);
 
     print(jsonResponse);
-    //print(widget.myToken);
+    print(widget.myToken);
 
     showDialog<void>(
       context: context,
@@ -56,23 +58,34 @@ class _CreatePostsState extends State<CreatePosts> {
               children: <Widget>[
                 const Align(
                     alignment: Alignment.topLeft,
-                    child: Text("Full name:",
+                    child: Text("title",
                         style: TextStyle(fontWeight: FontWeight.w700))),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(firstName + " " + lastName),
+                  child: Text(titleController.text),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 const Align(
                     alignment: Alignment.topLeft,
-                    child: Text("Body Temperature:",
+                    child: Text("location:",
                         style: TextStyle(fontWeight: FontWeight.w700))),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text("$bodyTemp ${measure == 1 ? "ºC" : "ºF"}"),
-                )
+                  child: Text(locationController.text),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("Date:",
+                        style: TextStyle(fontWeight: FontWeight.w700))),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(dateController.text),
+                ),
               ],
             ),
           ),
@@ -349,37 +362,37 @@ class _CreatePostsState extends State<CreatePosts> {
                     const SizedBox(
                       height: 20,
                     ),
-                    DropdownButtonFormField(
-                        decoration: const InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(20.0)),
-                              borderSide:
-                              BorderSide(color: Colors.grey, width: 0.0),
-                            ),
-                            border: OutlineInputBorder()),
-                        items: [
-                          const DropdownMenuItem(
-                            child: Text("ºC"),
-                            value: 1,
-                          ),
-                          const DropdownMenuItem(
-                            child: Text("ºF"),
-                            value: 2,
-                          )
-                        ],
-                        hint: const Text("Select item"),
-                        onChanged: (value) {
-                          setState(() {
-                            measure = value;
-                            // measureList.add(measure);
-                          });
-                        },
-                        onSaved: (value) {
-                          setState(() {
-                            measure = value;
-                          });
-                        }),
+                    // DropdownButtonFormField(
+                    //     decoration: const InputDecoration(
+                    //         enabledBorder: OutlineInputBorder(
+                    //           borderRadius:
+                    //           BorderRadius.all(Radius.circular(20.0)),
+                    //           borderSide:
+                    //           BorderSide(color: Colors.grey, width: 0.0),
+                    //         ),
+                    //         border: OutlineInputBorder()),
+                    //     items: [
+                    //       const DropdownMenuItem(
+                    //         child: Text("ºC"),
+                    //         value: 1,
+                    //       ),
+                    //       const DropdownMenuItem(
+                    //         child: Text("ºF"),
+                    //         value: 2,
+                    //       )
+                    //     ],
+                    //     hint: const Text("Select item"),
+                    //     onChanged: (value) {
+                    //       setState(() {
+                    //         measure = value;
+                    //         // measureList.add(measure);
+                    //       });
+                    //     },
+                    //     onSaved: (value) {
+                    //       setState(() {
+                    //         measure = value;
+                    //       });
+                    //     }),
                     const SizedBox(
                       height: 20,
                     ),
