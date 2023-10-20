@@ -23,12 +23,12 @@ class _OnboardingState extends State<Onboarding> {
             controller: _controller,
             children: const [
               Page1(
-                "Earn for every Referal ",
+                "Earn for every Work ",
                 "assets/images/boba-wealth.png",
                 Colors.amberAccent,
               ),
               Page1(
-                "Send Money Fast",
+                "Help world to grow",
                 "assets/images/urban-saving-money.png",
                 Colors.amberAccent,
               ),

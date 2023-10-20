@@ -1,9 +1,14 @@
+import 'dart:convert';
+// import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
+import 'package:ngo_app/screens/home_user/user_home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Core/Animation/Fade_Animation.dart';
 import '../../Core/Colors/Hex_Color.dart';
 
-
+import 'package:http/http.dart' as http;
 import '../register_user/register_user.dart';
 
 enum FormData {
@@ -26,6 +31,54 @@ class _LoginUserState extends State<LoginUser> {
 
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+  late SharedPreferences prefs;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initSharedPref();
+  }
+
+  void initSharedPref() async{
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  void loginUser() async{
+    if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty){
+
+      var reqBody = {
+        "email":emailController.text,
+        "password":passwordController.text
+      };
+
+      var response = await http.post(Uri.parse("https://ecogather.onrender.com/api/users/login"),
+          headers: {"Content-Type":"application/json"},
+          body: jsonEncode(reqBody)
+      );
+
+      var jsonResponse = jsonDecode(response.body);
+      var myToken = jsonResponse['token'];
+      var msg = jsonResponse['msg'];
+
+      var mailid= jsonResponse['user']['email'];
+      prefs.setString('token', myToken);
+      print(myToken);
+      print(msg);
+      print(mailid);
+
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>UserHome(mytoken: myToken)));
+      // if(jsonResponse==200){
+      //   var myToken = jsonResponse['token'];
+      //   prefs.setString('token', myToken);
+      //   Navigator.push(context, MaterialPageRoute(builder: (context)=>UserHome(mytoken: myToken)));
+      // }else{
+      //   print('Something went wrong');
+      //   print(jsonResponse['status']);
+      // }
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -212,11 +265,8 @@ class _LoginUserState extends State<LoginUser> {
                           delay: 1,
                           child: TextButton(
                               onPressed: () {
-                                // Navigator.pop(context);
-                                // Navigator.of(context)
-                                //     .push(MaterialPageRoute(builder: (context) {
-                                //   return MyApp(isLogin: true);
-                                // }));
+                                // Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterUser()));
+                                loginUser();
                               },
                               child: Text(
                                 "Login",
