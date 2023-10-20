@@ -60,6 +60,7 @@ class _LoginUserState extends State<LoginUser> {
       var jsonResponse = jsonDecode(response.body);
       var myToken = jsonResponse['token'];
       var msg = jsonResponse['msg'];
+      var id = jsonResponse['user']['_id'];
 
       var mailid= jsonResponse['user']['email'];
       prefs.setString('token', myToken);
@@ -67,7 +68,7 @@ class _LoginUserState extends State<LoginUser> {
       print(msg);
       print(mailid);
 
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>UserHome(mytoken: myToken)));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>UserHome(mytoken: myToken,userID:id ,)));
       // if(jsonResponse==200){
       //   var myToken = jsonResponse['token'];
       //   prefs.setString('token', myToken);

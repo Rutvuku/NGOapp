@@ -47,7 +47,7 @@ class _LoginNGOState extends State<LoginNGO> {
 
   void loginUser() async{
     if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty){
-
+      print('login started');
       var reqBody = {
         "email":emailController.text,
         "password":passwordController.text
@@ -69,7 +69,7 @@ class _LoginNGOState extends State<LoginNGO> {
       print(msg);
       print(mailid);
       print(id);
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>CreatePosts(myToken: myToken,userid: id.toString(),)));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>NGOHome(myToken: myToken, userID: id)));
       // if(jsonResponse==200){
       //   var myToken = jsonResponse['token'];
       //   prefs.setString('token', myToken);
