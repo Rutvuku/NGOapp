@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ngo_app/screens/home_ngo/ngo_home.dart';
 
 class CreatePosts extends StatefulWidget {
   final String myToken;
@@ -38,7 +39,7 @@ class _CreatePostsState extends State<CreatePosts> {
       "vacancy": vacancyController.text,
       "creator":widget.userid,
     };
-    var response = await http.post(Uri.parse("https://ecogather.onrender.com/api/event/"),
+    var response = await http.post(Uri.parse("https://ecogather.onrender.com/api/event/createpost"),
         headers: {"Content-Type":"application/json",},
         body: jsonEncode(reqBody)
     );
@@ -109,7 +110,7 @@ class _CreatePostsState extends State<CreatePosts> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                MyProfilePage())) // Open my profile
+                                NGOHome(myToken: widget.myToken, userID: widget.userid))) // Open my profile
                         .then((_) => _formKey.currentState
                         ?.reset()); // Empty the form fields
                     setState(() {});

@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:ngo_app/screens/home_ngo/ngo_home.dart';
 import 'package:ngo_app/screens/login_ngo/login_ngo.dart';
 import 'package:ngo_app/screens/login_user/login_user.dart';
-
+import 'package:http/http.dart' as http;
 import '../../Core/Animation/Fade_Animation.dart';
 import '../../Core/Colors/Hex_Color.dart';
 
@@ -27,6 +30,43 @@ class _RegisterNGOState extends State<RegisterNGO> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController confirmPasswordController = new TextEditingController();
+
+  void register() async{
+    if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty){
+
+      var reqBody = {
+        "email":emailController.text,
+        "password":passwordController.text
+      };
+
+      var response = await http.post(Uri.parse("https://ecogather.onrender.com/api/users/register"),
+          headers: {"Content-Type":"application/json"},
+          body: jsonEncode(reqBody)
+      );
+
+      var jsonResponse = jsonDecode(response.body);
+      var myToken = jsonResponse['token'];
+      var msg = jsonResponse['msg'];
+      var id = jsonResponse['user']['_id'];
+
+      var mailid= jsonResponse['user']['email'];
+      //prefs.setString('token', myToken);
+      print(myToken);
+      print(msg);
+      print(mailid);
+
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>NGOHome(myToken: myToken, userID: id)));
+      // if(jsonResponse==200){
+      //   var myToken = jsonResponse['token'];
+      //   prefs.setString('token', myToken);
+      //   Navigator.push(context, MaterialPageRoute(builder: (context)=>UserHome(mytoken: myToken)));
+      // }else{
+      //   print('Something went wrong');
+      //   print(jsonResponse['status']);
+      // }
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -383,7 +423,9 @@ class _RegisterNGOState extends State<RegisterNGO> {
                         FadeAnimation(
                           delay: 1,
                           child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                register();
+                              },
                               child: Text(
                                 "Sign Up",
                                 style: TextStyle(

@@ -61,6 +61,9 @@ class _NGOHomeState extends State<NGOHome> {
     );
     // final List<PostModel> postModels = jsonData.map((e) => PostModel.fromJson(e)).toList();
     print("successful");
+    setState(() {
+
+    });
     return currentPosts;
   }
 
@@ -102,14 +105,25 @@ class _NGOHomeState extends State<NGOHome> {
                       itemCount: pdata.length,
                         itemBuilder: (BuildContext context, int index){
                       return Card(
-                        child: Column(
-                          children: [
-                            Text(pdata[index].title),
-                            Text(pdata[index].location),
-                            Text(pdata[index].date),
-                            Text(pdata[index].time),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Colors.blue, Colors.green], // Specify your gradient colors
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0), // Match the card's border radius
+                          ),
+                          child: Column(
+                            children: [
+                              Text(pdata[index].title),
+                              Text(pdata[index].location),
+                              Text(pdata[index].date),
+                              Text(pdata[index].time),
 
-                          ],
+                            ],
+                          ),
+
                         ),
                       );
                     });

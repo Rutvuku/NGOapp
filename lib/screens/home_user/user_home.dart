@@ -24,7 +24,7 @@ class _UserHomeState extends State<UserHome> {
     var reqBody = {
       "userId": widget.userID,
     };
-    var response = await http.post(Uri.parse("https://ecogather.onrender.com/api/event/getprevposts"),
+    var response = await http.post(Uri.parse("https://ecogather.onrender.com/api/posts"),
         headers: {"Content-Type":"application/json",},
         body: jsonEncode(reqBody)
     );
@@ -40,6 +40,9 @@ class _UserHomeState extends State<UserHome> {
     );
     // final List<PostModel> postModels = jsonData.map((e) => PostModel.fromJson(e)).toList();
     print("successful");
+    setState(() {
+
+    });
     return prevPosts;
   }
   @override
