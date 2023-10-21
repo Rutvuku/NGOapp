@@ -43,6 +43,7 @@ class _RegisterUserState extends State<RegisterUser> {
       );
 
       var jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
       var myToken = jsonResponse['token'];
       var msg = jsonResponse['msg'];
       var id = jsonResponse['user']['_id'];

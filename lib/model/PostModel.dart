@@ -6,10 +6,10 @@ class PostModel {
   String creator;
   String location;
   String tagline;
-  // List<dynamic> participants;
-  // DateTime createdAt;
-  // bool completed;
-  // int v;
+  List<dynamic> participants;
+  String createdAt;
+  bool completed;
+  int v;
 
   PostModel({
     required this.id,
@@ -19,10 +19,10 @@ class PostModel {
     required this.creator,
     required this.location,
     required this.tagline,
-    // required this.participants,
-    // required this.createdAt,
-    // required this.completed,
-    // required this.v,
+    required this.participants,
+    required this.createdAt,
+    required this.completed,
+    required this.v,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
@@ -34,10 +34,11 @@ class PostModel {
       creator: json['creator'],
       location: json['location'],
       tagline: json['tagline'],
-      // participants: json['participants'],
-      // createdAt: DateTime.parse(json['createdAt']),
-      // completed: json['completed'],
-      // v: json['__v'],
+      participants: json['participants'],
+      completed: json['completed'],
+      createdAt: json['createdAt'],
+      v: json['__v']
+
     );
   }
 
@@ -50,10 +51,10 @@ class PostModel {
       'creator': creator,
       'location': location,
       'tagline': tagline,
-      // 'participants': participants,
-      // 'createdAt': createdAt.toIso8601String(),
-      // 'completed': completed,
-      // '__v': v,
+      'participants': participants,
+      'createdAt': createdAt,
+      'completed': completed,
+      '__v': v,
     };
   }
 }

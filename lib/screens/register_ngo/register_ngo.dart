@@ -53,6 +53,7 @@ class _RegisterNGOState extends State<RegisterNGO> {
       //prefs.setString('token', myToken);
       print(myToken);
       print(msg);
+      print(id);
       print(mailid);
 
       Navigator.push(context, MaterialPageRoute(builder: (context)=>NGOHome(myToken: myToken, userID: id)));

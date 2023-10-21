@@ -24,17 +24,17 @@ class _UserHomeState extends State<UserHome> {
     var reqBody = {
       "userId": widget.userID,
     };
-    var response = await http.post(Uri.parse("https://ecogather.onrender.com/api/posts"),
+    var response = await http.get(Uri.parse("https://ecogather.onrender.com/api/posts/posts"),
         headers: {"Content-Type":"application/json",},
-        body: jsonEncode(reqBody)
+
     );
     var jsonResponse = jsonDecode(response.body);
     print(jsonResponse);
     // final List<Map<String, dynamic>> jsonData = json.decode(jsonResponse);
     print(jsonResponse);
-    jsonResponse['currentPosts'].forEach(
+    jsonResponse['posts'].forEach(
             (value)=>{
-          prevPosts.add(PostModel(id: value['_id'], title: value['title'], date: value['date'], time: value['time'], creator: value['creator'], location: value['location'], tagline: value['tagline']))
+          prevPosts.add(PostModel(id: value['_id'], title: value['title'], date: value['date'], time: value['time'], creator: value['creator'], location: value['location'], tagline: value['tagline'],participants: value['participants'],createdAt: value['createdAt'],completed: value['completed'],v: value['__v']))
 
         }
     );
@@ -60,7 +60,7 @@ class _UserHomeState extends State<UserHome> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          height: AppConstants.screenHeight(context)*0.37,
+          height: AppConstants.screenHeight(context)*0.9,
           width: AppConstants.screenWidth(context)*0.8,
           child: FutureBuilder(
             future: getAll(),
@@ -72,46 +72,61 @@ class _UserHomeState extends State<UserHome> {
               }
               else{
                 List<PostModel> pdata = snapshot.data;
-                return ListView.builder(
-                    itemCount: pdata.length,
-                    itemBuilder: (BuildContext context, int index){
-                      return Card(
-                        child: Column(
-                          children: [
-                            Text(pdata[index].title),
-                            Text(pdata[index].location),
-                            Text(pdata[index].date),
-                            Text(pdata[index].time),
-                            CustomButton(
-                              width: 200,
-                              backgroundColor: Colors.green,
-                              isThreeD: true,
-                              height: 35,
-                              borderRadius: 25,
-                              animate: true,
-                              margin: const EdgeInsets.all(10),
-                              onPressed: ()async {
-                                var reqBody = {
-                                  "userId": widget.userID,
-                                  "eventId":  pdata[index].id,
-                                };
+                return Center(
+                  child: ListView.builder(
+                      itemCount: pdata.length,
+                      itemBuilder: (BuildContext context, int index){
+                        return Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: Card(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [Colors.blue, Colors.green], // Specify your gradient colors
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(10.0), // Match the card's border radius
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(pdata[index].title),
+                                  Text(pdata[index].location),
+                                  Text(pdata[index].date),
+                                  Text(pdata[index].time),
+                                  CustomButton(
+                                    width: 200,
+                                    backgroundColor: Colors.green,
+                                    isThreeD: true,
+                                    height: 35,
+                                    borderRadius: 25,
+                                    animate: true,
+                                    margin: const EdgeInsets.all(10),
+                                    onPressed: ()async {
+                                      var reqBody = {
+                                        "userId": widget.userID,
+                                        "eventId":  pdata[index].id,
+                                      };
 
-                                var res = await http.post(Uri.parse("https://ecogather.onrender.com/api/users/eventRegister"),
-                                  headers: {"Content-Type":"application/json",},
-                                  body: jsonEncode(reqBody),
-                                );
+                                      var res = await http.post(Uri.parse("https://ecogather.onrender.com/api/users/eventRegister"),
+                                        headers: {"Content-Type":"application/json",},
+                                        body: jsonEncode(reqBody),
+                                      );
 
 
-                              },
-                              child: Text(
-                                "Register",
-                                style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),
+                                    },
+                                    child: Text(
+                                      "Register",
+                                      style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      );
-                    });
+                          ),
+                        );
+                      }),
+                );
               }
             },
           ),
